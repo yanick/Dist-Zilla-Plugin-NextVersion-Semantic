@@ -1,23 +1,12 @@
 package Dist::Zilla::Plugin::PreviousVersion::Changelog;
+BEGIN {
+  $Dist::Zilla::Plugin::PreviousVersion::Changelog::AUTHORITY = 'cpan:YANICK';
+}
+{
+  $Dist::Zilla::Plugin::PreviousVersion::Changelog::VERSION = '0.1.0';
+}
 # ABSTRACT: extract previous version from changelog
 
-=head1 DESCRIPTION
-
-Plugin implementing the L<Dist::Zilla::Role::PreviousVersionProvider> role.
-It provides the previous released version by peeking at the C<Changelog> file
-and returning its latest release, skipping over C<{{$NEXT}}> if its there
-(see L<Dist::Zilla::Plugin::NextRelease>).
-
-Note that this module uses L<CPAN::Changes> to parse the change log. If the
-file is not well-formed according to its specs, strange things might happen.
-
-=head1 CONFIGURATION
-
-=head2 filename
-
-Changelog filename. Defaults to 'Changes'.
-
-=cut
 
 use strict;
 use warnings;
@@ -67,3 +56,44 @@ sub provide_previous_version {
 __PACKAGE__->meta->make_immutable;
 
 1;
+
+__END__
+=pod
+
+=head1 NAME
+
+Dist::Zilla::Plugin::PreviousVersion::Changelog - extract previous version from changelog
+
+=head1 VERSION
+
+version 0.1.0
+
+=head1 DESCRIPTION
+
+Plugin implementing the L<Dist::Zilla::Role::PreviousVersionProvider> role.
+It provides the previous released version by peeking at the C<Changelog> file
+and returning its latest release, skipping over C<{{$NEXT}}> if its there
+(see L<Dist::Zilla::Plugin::NextRelease>).
+
+Note that this module uses L<CPAN::Changes> to parse the change log. If the
+file is not well-formed according to its specs, strange things might happen.
+
+=head1 CONFIGURATION
+
+=head2 filename
+
+Changelog filename. Defaults to 'Changes'.
+
+=head1 AUTHOR
+
+Yanick Champoux <yanick@cpan.org>
+
+=head1 COPYRIGHT AND LICENSE
+
+This software is copyright (c) 2012 by Yanick Champoux.
+
+This is free software; you can redistribute it and/or modify it under
+the same terms as the Perl 5 programming language system itself.
+
+=cut
+
