@@ -77,7 +77,7 @@ throws_ok
 $tzil = make_tzil( make_dist_ini( pvp => 0 ), make_changes('') );
 throws_ok
     { $tzil->build; }
-    qr/one plugin with the role PreviousVersionProvider is required/,
+    qr/PreviousVersionProvider must be referenced in dist\.ini/,
     'must throw correct error if no PreviousVersionProvider loaded';
 
 ### utility functions
