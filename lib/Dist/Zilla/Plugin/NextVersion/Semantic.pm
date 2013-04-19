@@ -218,7 +218,7 @@ has previous_version => (
 
         $self->log_fatal( 
             "at least one plugin with the role PreviousVersionProvider is required" 
-        ) unless ref $plugins;
+        ) unless ref $plugins and @$plugins >= 1;
 
         for my $plugin ( @$plugins ) {
             my $version = $plugin->provide_previous_version;
