@@ -71,6 +71,7 @@ with qw/
     Dist::Zilla::Role::Plugin
     Dist::Zilla::Role::FileMunger
     Dist::Zilla::Role::TextTemplate
+    Dist::Zilla::Role::BeforeRelease
     Dist::Zilla::Role::AfterRelease
     Dist::Zilla::Role::VersionProvider
 /;

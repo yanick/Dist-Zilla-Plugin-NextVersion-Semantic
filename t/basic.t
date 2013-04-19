@@ -68,14 +68,11 @@ END
         "override with \$ENV{V}";
 }
 
-TODO: {
-    local $TODO = '[rt.cpan.org #84744]';
-    $tzil = make_tzil( make_dist_ini(), make_changes('') );
-    throws_ok
-        { $tzil->release; }
-        qr/change file has no content for next version/,
-        'release must fail if there are no recorded changes';
-}
+$tzil = make_tzil( make_dist_ini(), make_changes('') );
+throws_ok
+    { $tzil->release; }
+    qr/change file has no content for next version/,
+    'release must fail if there are no recorded changes';
 
 ### utility functions
 
