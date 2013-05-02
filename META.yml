@@ -1,0 +1,55 @@
+---
+abstract: 'update the next version, semantic-wise'
+author:
+  - 'Yanick Champoux <yanick@cpan.org>'
+build_requires:
+  File::Find: 0
+  File::Temp: 0
+  Module::Build: 0.3601
+  Test::DZil: 0
+  Test::Exception: 0
+  Test::More: 0.88
+configure_requires:
+  Module::Build: 0.3601
+dynamic_config: 0
+generated_by: 'Dist::Zilla version 4.300030, CPAN::Meta::Converter version 2.120921'
+license: perl
+meta-spec:
+  url: http://module-build.sourceforge.net/META-spec-v1.4.html
+  version: 1.4
+name: Dist-Zilla-Plugin-NextVersion-Semantic
+provides:
+  Dist::Zilla::Plugin::NextVersion::Semantic:
+    file: lib/Dist/Zilla/Plugin/NextVersion/Semantic.pm
+    version: v0.1.1
+  Dist::Zilla::Plugin::PreviousVersion::Changelog:
+    file: lib/Dist/Zilla/Plugin/PreviousVersion/Changelog.pm
+    version: v0.1.1
+  Dist::Zilla::Role::YANICK::PreviousVersionProvider:
+    file: lib/Dist/Zilla/Role/YANICK/PreviousVersionProvider.pm
+    version: v0.1.1
+requires:
+  CPAN::Changes: 0.17
+  Dist::Zilla::Role::AfterRelease: 0
+  Dist::Zilla::Role::BeforeRelease: 0
+  Dist::Zilla::Role::FileMunger: 0
+  Dist::Zilla::Role::Plugin: 0
+  Dist::Zilla::Role::TextTemplate: 0
+  Dist::Zilla::Role::VersionProvider: 0
+  List::Util: 0
+  Moose: 0
+  Moose::Role: 0
+  Moose::Util::TypeConstraints: 0
+  Perl::Version: 0
+  strict: 0
+  warnings: 0
+resources:
+  bugtracker: http://rt.cpan.org/Public/Dist/Display.html?Name=Dist-Zilla-Plugin-NextVersion-Semantic
+  homepage: http://search.cpan.org/dist/Dist-Zilla-Plugin-NextVersion-Semantic/
+  repository: https://github.com/yanick/Dist-Zilla-Plugin-NextVersion-Semantic.git
+version: 0.1.1
+x_author_pledge:
+  version: 1
+x_authority: cpan:YANICK
+x_contributors:
+  - 'Alex Peters <lxp@cpan.org>'

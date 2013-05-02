@@ -1,0 +1,44 @@
+This file contains message digests of all files listed in MANIFEST,
+signed via the Module::Signature module, version 0.68.
+
+To verify the content in this distribution, first make sure you have
+Module::Signature installed, then type:
+
+    % cpansign -v
+
+It will check each file's integrity, as well as the signature's
+validity.  If "==> Signature verified OK! <==" is not displayed,
+the distribution may already have been compromised, and you should
+not run its Makefile.PL or Build.PL.
+
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA1
+
+SHA1 d699314121a92f76527dd7c04412b85572b36055 AUTHOR_PLEDGE
+SHA1 b95f0e64697b3b7084f89498fe0fe5e50eca98ab Build.PL
+SHA1 7852d4f304a25a0414ce52d76560123ff24ceb61 CONTRIBUTORS
+SHA1 0b1344de10d1958e98d663a9d3024d5679720455 Changes
+SHA1 9cdc7f1a9575fd49a1282d6d60b1ad236effe123 INSTALL
+SHA1 42a9b278ca94a31df654fec186efe74ba9565d7e LICENSE
+SHA1 5963a40b9e6186a5a2546089e6d955b60983c81a MANIFEST
+SHA1 54d5ce1d3ec61d907da329787b0852d16d8fa96d MANIFEST.SKIP
+SHA1 46641170f5173c970dcb580eb53ca7e9285565fb META.json
+SHA1 65b0cc146ac38b1d0cca429030ed32a6826e790a META.yml
+SHA1 b0a016eb8f61ab63ad8ad0da76bf0f7b5ac936fc README
+SHA1 c84fcacddbf4986870529b356ffa706a80b397e5 README.mkdn
+SHA1 9439558ea8192dfd4359a13c014596e299e10606 corpus/lib/DZT/Sample.pm
+SHA1 383ea90a33c34532e1847396363cf5fd5e15ed70 dist.ini
+SHA1 6b3e4c2a4109ce230945fcf09881ced237cd4a75 lib/Dist/Zilla/Plugin/NextVersion/Semantic.pm
+SHA1 ea2847be20fe3b2ff9e4e6ff2718ce992ec0dc8a lib/Dist/Zilla/Plugin/PreviousVersion/Changelog.pm
+SHA1 3ad99de113b1c484201e6d32b14038dfc2ab0a3e lib/Dist/Zilla/Role/YANICK/PreviousVersionProvider.pm
+SHA1 3cbe905b92fbc69d59a06031d5ce6c837b352aa2 t/00-compile.t
+SHA1 df4bcaca16a9a22898ce83472cf8dc52a8cfdec6 t/000-report-versions-tiny.t
+SHA1 f28812435973b4e77c6d8aff6a68bef934896c7d t/basic.t
+SHA1 ec3f84bfd7a9ce3246e7592f4134100c6b5ce02b xt/release/unused-vars.t
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.11 (GNU/Linux)
+
+iEYEARECAAYFAlGBw04ACgkQ34Hwf+GwC4zh/ACgmqmIgbYcIHnNlJ9y6HQHfAP6
+gZYAnjc0gPrskQx60xIQHP1JWoU/NsOI
+=wDAf
+-----END PGP SIGNATURE-----
