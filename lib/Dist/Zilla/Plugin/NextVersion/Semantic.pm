@@ -4,10 +4,14 @@ package Dist::Zilla::Plugin::NextVersion::Semantic;
 =head1 SYNOPSIS
 
     # in dist.ini
+
     [NextVersion::Semantic]
     major = MAJOR, API CHANGE
     minor = MINOR, ENHANCEMENTS
     revision = REVISION, BUG FIXES
+
+    ; must also load a PreviousVersionProvider
+    [PreviousVersion::Changelog]
 
 =head1 DESCRIPTION
 
@@ -217,8 +221,9 @@ has previous_version => (
             $self->zilla->plugins_with('-YANICK::PreviousVersionProvider');
 
         $self->log_fatal( 
-            "at least one plugin with the role PreviousVersionProvider is required" 
-        ) unless ref $plugins;
+            "at least one plugin with the role PreviousVersionProvider",
+            "must be referenced in dist.ini"
+        ) unless ref $plugins and @$plugins >= 1;
 
         for my $plugin ( @$plugins ) {
             my $version = $plugin->provide_previous_version;

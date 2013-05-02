@@ -1,7 +1,7 @@
 use strict;
 use warnings;
 
-use Test::More tests => 6;
+use Test::More tests => 7;
 use Test::Exception;
 
 use Test::DZil;
@@ -74,6 +74,12 @@ throws_ok
     qr/change file has no content for next version/,
     'release must fail if there are no recorded changes';
 
+$tzil = make_tzil( make_dist_ini( pvp => 0 ), make_changes('') );
+throws_ok
+    { $tzil->build; }
+    qr/PreviousVersionProvider must be referenced in dist\.ini/,
+    'must throw correct error if no PreviousVersionProvider loaded';
+
 ### utility functions
 
 sub make_tzil {
@@ -90,6 +96,7 @@ sub make_tzil {
     );
 }
 sub make_dist_ini {
+    my %args = ( pvp => 1, @_ );
     dist_ini({
         name     => 'DZT-Sample',
         abstract => 'Sample DZ Dist',
@@ -100,8 +107,8 @@ sub make_dist_ini {
         GatherDir
         FakeRelease
         NextRelease
-        PreviousVersion::Changelog
     /,
+    ( $args{'pvp'} ? 'PreviousVersion::Changelog' : () ),
     [ 'NextVersion::Semantic' => { @_ } ]
     );
 }
