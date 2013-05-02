@@ -1,6 +1,7 @@
 Revision history for {{$dist->name}}
 
 {{$NEXT}}
+    - Forgot BeforeRelease role (oops). [RT#84744, patch by Alex Peters]
 
 0.1.0     2012-03-19
     - release the Kraken!

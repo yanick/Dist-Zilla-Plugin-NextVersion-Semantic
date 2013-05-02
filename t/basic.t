@@ -1,7 +1,8 @@
 use strict;
 use warnings;
 
-use Test::More tests => 5;
+use Test::More tests => 6;
+use Test::Exception;
 
 use Test::DZil;
 
@@ -66,6 +67,12 @@ END
         qr/6\.6\.6/,
         "override with \$ENV{V}";
 }
+
+$tzil = make_tzil( make_dist_ini(), make_changes('') );
+throws_ok
+    { $tzil->release; }
+    qr/change file has no content for next version/,
+    'release must fail if there are no recorded changes';
 
 ### utility functions
 
