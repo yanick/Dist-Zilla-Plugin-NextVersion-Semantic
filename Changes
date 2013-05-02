@@ -2,6 +2,8 @@ Revision history for {{$dist->name}}
 
 {{$NEXT}}
 
+0.1.1     2013-05-01
+
     [BUGS FIXES]
     - Forgot BeforeRelease role (oops). [RT#84744, patch by Alex Peters]
     - Clean up error messages and improve docs for PreviousVersionProvider. [GH#1, patch by Alex Peters]
