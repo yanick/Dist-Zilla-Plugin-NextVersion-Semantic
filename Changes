@@ -2,10 +2,9 @@ Revision history for {{$dist->name}}
 
 {{$NEXT}}
 
-[BUGS FIXES]
+    [BUGS FIXES]
     - Forgot BeforeRelease role (oops). [RT#84744, patch by Alex Peters]
-    - Clean up error messages and improve docs for PreviousVersionProvider.
-        [GH#1, patch by Alex Peters]
+    - Clean up error messages and improve docs for PreviousVersionProvider. [GH#1, patch by Alex Peters]
 
 0.1.0     2012-03-19
     - release the Kraken!
