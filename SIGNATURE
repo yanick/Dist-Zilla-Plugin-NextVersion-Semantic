@@ -1,0 +1,44 @@
+This file contains message digests of all files listed in MANIFEST,
+signed via the Module::Signature module, version 0.68.
+
+To verify the content in this distribution, first make sure you have
+Module::Signature installed, then type:
+
+    % cpansign -v
+
+It will check each file's integrity, as well as the signature's
+validity.  If "==> Signature verified OK! <==" is not displayed,
+the distribution may already have been compromised, and you should
+not run its Makefile.PL or Build.PL.
+
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA1
+
+SHA1 d699314121a92f76527dd7c04412b85572b36055 AUTHOR_PLEDGE
+SHA1 b2a800255a87155949fb74829ce472cf3ea60286 Build.PL
+SHA1 7852d4f304a25a0414ce52d76560123ff24ceb61 CONTRIBUTORS
+SHA1 ff4096fa10441e982fb6c06dc00b8ac71cc1683b Changes
+SHA1 9cdc7f1a9575fd49a1282d6d60b1ad236effe123 INSTALL
+SHA1 42a9b278ca94a31df654fec186efe74ba9565d7e LICENSE
+SHA1 5963a40b9e6186a5a2546089e6d955b60983c81a MANIFEST
+SHA1 54d5ce1d3ec61d907da329787b0852d16d8fa96d MANIFEST.SKIP
+SHA1 574c539087f8bad37b232a56bcab0de97125b233 META.json
+SHA1 377bcf4f6c9d67058b1f4018cc051a1868f690e6 META.yml
+SHA1 82af7919d97f60d96e536479733184bb71a7ef54 README
+SHA1 542a99af9878ede0c5123b181bd51f122ac7c7e5 README.mkdn
+SHA1 9439558ea8192dfd4359a13c014596e299e10606 corpus/lib/DZT/Sample.pm
+SHA1 383ea90a33c34532e1847396363cf5fd5e15ed70 dist.ini
+SHA1 88802cf090c461bb8870b8e0dbc9bf3c78a71cbd lib/Dist/Zilla/Plugin/NextVersion/Semantic.pm
+SHA1 73891458c436b420ada3e94f55583212aa79096d lib/Dist/Zilla/Plugin/PreviousVersion/Changelog.pm
+SHA1 4b941da3cd9bbe1ae944f6727bb2ce89b8cf7760 lib/Dist/Zilla/Role/YANICK/PreviousVersionProvider.pm
+SHA1 3cbe905b92fbc69d59a06031d5ce6c837b352aa2 t/00-compile.t
+SHA1 ad9eafb3e5e139d638e5f05374cf25bce9083960 t/000-report-versions-tiny.t
+SHA1 f28812435973b4e77c6d8aff6a68bef934896c7d t/basic.t
+SHA1 ec3f84bfd7a9ce3246e7592f4134100c6b5ce02b xt/release/unused-vars.t
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.11 (GNU/Linux)
+
+iEYEARECAAYFAlGDBdgACgkQ34Hwf+GwC4w0iwCg690dl5HZteFc1OL+FJMJRGxL
+MDcAoKvkeR0MXYDRt1jejqdsM3BaOCVO
+=nY24
+-----END PGP SIGNATURE-----

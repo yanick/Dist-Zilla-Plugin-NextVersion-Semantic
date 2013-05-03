@@ -1,23 +1,18 @@
-Revision history for {{$dist->name}}
+Revision history for Dist-Zilla-Plugin-NextVersion-Semantic
 
-{{$NEXT}}
- [API CHANGES]
-
+0.1.2 2013-05-02
  [BUG FIXES]
  - Bump CPAN::Changes dependency to v0.20.
 
- [DOCUMENTATION]
-
- [ENHANCEMENTS]
-
- [NEW FEATURES]
-
  [STATISTICS]
+ - code churn: 2 files changed, 23 insertions(+), 6 deletions(-)
 
 0.1.1 2013-05-01
  [BUGS FIXES]
  - Forgot BeforeRelease role (oops). [RT#84744, patch by Alex Peters]
- - Clean up error messages and improve docs for PreviousVersionProvider. [GH#1, patch by Alex Peters]
+ - Clean up error messages and improve docs for PreviousVersionProvider.
+
+ [GH#1, patch by Alex Peters]
 
  [STATISTICS]
  - code churn: 6 files changed, 36 insertions(+), 12 deletions(-)
