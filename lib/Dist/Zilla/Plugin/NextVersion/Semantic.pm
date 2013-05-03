@@ -66,7 +66,7 @@ consuming the L<Dist::Zilla::Role::YANICK::PreviousVersionProvider> role.
 use strict;
 use warnings;
 
-use CPAN::Changes 0.17;
+use CPAN::Changes 0.20;
 use Perl::Version;
 
 use Moose;
