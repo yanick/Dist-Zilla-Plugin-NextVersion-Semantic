@@ -68,6 +68,7 @@ use warnings;
 
 use CPAN::Changes 0.20;
 use Perl::Version;
+use List::MoreUtils qw/ any /;
 
 use Moose;
 
@@ -90,8 +91,6 @@ coerce ChangeCategory =>
     via {
         [ split /\s*,\s*/, $_ ]
     };
-
-use experimental qw(smartmatch);
 
 =head1 PARAMETERS
 
@@ -275,19 +274,19 @@ sub inc_version {
 
     $last_version = Perl::Version->new( $last_version );
 
-    for ( $self->major_groups ) {
-        next unless $_ ~~ @groups;
+    for my $group ( $self->major_groups ) {
+        next unless any { $group eq $_ } @groups;
 
-        $self->log_debug( "$_ change detected, major increase" );
+        $self->log_debug( "$group change detected, major increase" );
 
         $last_version->inc_revision;
         return $last_version
     }
 
-    for ( '', $self->minor_groups ) {
-        next unless $_ ~~ @groups;
+    for my $group ( '', $self->minor_groups ) {
+        next unless any { $group eq $_ } @groups;
 
-        my $section = $_ || 'general';
+        my $section = $group || 'general';
         $self->log_debug( "$section change detected, minor increase" );
 
         $last_version->inc_version;
