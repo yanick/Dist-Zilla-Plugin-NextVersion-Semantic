@@ -16,7 +16,7 @@ package Dist::Zilla::Plugin::NextVersion::Semantic;
 =head1 DESCRIPTION
 
 Increases the distribution's version according to the semantic versioning rules
-(see L<http://semver.org/>) by inspecting the changelog. 
+(see L<http://semver.org/>) by inspecting the changelog.
 
 More specifically, the plugin performs the following actions:
 
@@ -58,7 +58,7 @@ this would look like
 If a version is given via the environment variable C<V>, it will taken
 as-if as the next version.
 
-For this plugin to work, your L<Dist::Zilla> configuration must also contain a plugin 
+For this plugin to work, your L<Dist::Zilla> configuration must also contain a plugin
 consuming the L<Dist::Zilla::Role::YANICK::PreviousVersionProvider> role.
 
 =cut
@@ -68,6 +68,7 @@ use warnings;
 
 use CPAN::Changes 0.20;
 use Perl::Version;
+use List::MoreUtils qw/ any /;
 
 use Moose;
 
@@ -103,7 +104,7 @@ has change_file  => ( is => 'ro', isa=>'Str', default => 'Changes' );
 
 =head2 numify_version
 
-If B<true>, the version will be a number using the I<x.yyyzzz> convention instead 
+If B<true>, the version will be a number using the I<x.yyyzzz> convention instead
 of I<x.y.z>.  Defaults to B<false>.
 
 =cut
@@ -164,10 +165,10 @@ sub before_release {
 
     my ($changes_file) = grep { $_->name eq $self->change_file } @{ $self->zilla->files };
 
-  my $changes = CPAN::Changes->load_string( 
-      $changes_file->content, 
-      next_token => qr/{{\$NEXT}}/ 
-  ); 
+  my $changes = CPAN::Changes->load_string(
+      $changes_file->content,
+      next_token => qr/{{\$NEXT}}/
+  );
 
   my( $next ) = reverse $changes->releases;
 
@@ -182,10 +183,10 @@ sub after_release {
   my ($self) = @_;
   my $filename = $self->change_file;
 
-  my $changes = CPAN::Changes->load( 
-      $self->change_file, 
-      next_token => qr/{{\$NEXT}}/ 
-  ); 
+  my $changes = CPAN::Changes->load(
+      $self->change_file,
+      next_token => qr/{{\$NEXT}}/
+  );
 
   # remove empty groups
   $changes->delete_empty_groups;
@@ -213,14 +214,14 @@ sub all_groups {
 
 has previous_version => (
     is => 'ro',
-    lazy => 1, 
+    lazy => 1,
     default => sub {
         my $self = shift;
 
         my $plugins =
             $self->zilla->plugins_with('-YANICK::PreviousVersionProvider');
 
-        $self->log_fatal( 
+        $self->log_fatal(
             "at least one plugin with the role PreviousVersionProvider",
             "must be referenced in dist.ini"
         ) unless ref $plugins and @$plugins >= 1;
@@ -253,12 +254,12 @@ sub next_version {
     my ($changes_file) = grep { $_->name eq $self->change_file } @{ $self->zilla->files };
 
     my $changes = CPAN::Changes->load_string( $changes_file->content,
-        next_token => qr/{{\$NEXT}}/ ); 
+        next_token => qr/{{\$NEXT}}/ );
 
     my ($next) = reverse $changes->releases;
 
-    my $new_ver = $self->inc_version( 
-        $last_version, 
+    my $new_ver = $self->inc_version(
+        $last_version,
         grep { scalar @{ $next->changes($_) } } $next->groups
     );
 
@@ -273,19 +274,19 @@ sub inc_version {
 
     $last_version = Perl::Version->new( $last_version );
 
-    for ( $self->major_groups ) {
-        next unless $_ ~~ @groups;
+    for my $group ( $self->major_groups ) {
+        next unless any { $group eq $_ } @groups;
 
-        $self->log_debug( "$_ change detected, major increase" );
+        $self->log_debug( "$group change detected, major increase" );
 
         $last_version->inc_revision;
         return $last_version
     }
 
-    for ( '', $self->minor_groups ) {
-        next unless $_ ~~ @groups;
+    for my $group ( '', $self->minor_groups ) {
+        next unless any { $group eq $_ } @groups;
 
-        my $section = $_ || 'general';
+        my $section = $group || 'general';
         $self->log_debug( "$section change detected, minor increase" );
 
         $last_version->inc_version;
@@ -304,7 +305,7 @@ sub munge_files {
   my ($file) = grep { $_->name eq $self->change_file } @{ $self->zilla->files };
   return unless $file;
 
-  my $changes = CPAN::Changes->load_string( $file->content, 
+  my $changes = CPAN::Changes->load_string( $file->content,
       next_token => qr/{{\$NEXT}}/
   );
 
