@@ -1,0 +1,44 @@
+This file contains message digests of all files listed in MANIFEST,
+signed via the Module::Signature module, version 0.68.
+
+To verify the content in this distribution, first make sure you have
+Module::Signature installed, then type:
+
+    % cpansign -v
+
+It will check each file's integrity, as well as the signature's
+validity.  If "==> Signature verified OK! <==" is not displayed,
+the distribution may already have been compromised, and you should
+not run its Makefile.PL or Build.PL.
+
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA1
+
+SHA1 d699314121a92f76527dd7c04412b85572b36055 AUTHOR_PLEDGE
+SHA1 94f144d8b0ad33ed8cc5958e621cd8fb8c512189 Build.PL
+SHA1 223c55073c67b60141bbe5e7f482c92b238f82be CONTRIBUTORS
+SHA1 e7b89a00413918335e041abc3fe96b911d22e334 Changes
+SHA1 9cdc7f1a9575fd49a1282d6d60b1ad236effe123 INSTALL
+SHA1 42a9b278ca94a31df654fec186efe74ba9565d7e LICENSE
+SHA1 5963a40b9e6186a5a2546089e6d955b60983c81a MANIFEST
+SHA1 54d5ce1d3ec61d907da329787b0852d16d8fa96d MANIFEST.SKIP
+SHA1 0cdf75df6dbf8046b0fd77acd698c27d82284e43 META.json
+SHA1 532cbdad1b675c946ed3a6602f0e13b5f895632a META.yml
+SHA1 6760ebcf5dc9a207b35420f3774a209253c58cbe README
+SHA1 db2ddcd772797689a446a52bf73dbe6a56b0d854 README.mkdn
+SHA1 9439558ea8192dfd4359a13c014596e299e10606 corpus/lib/DZT/Sample.pm
+SHA1 383ea90a33c34532e1847396363cf5fd5e15ed70 dist.ini
+SHA1 edd3a4e727b6a116cda93ad18c99153dfcd589b7 lib/Dist/Zilla/Plugin/NextVersion/Semantic.pm
+SHA1 663bed29a17cbdc3d74e99f6d9a3f2d99e1b7e01 lib/Dist/Zilla/Plugin/PreviousVersion/Changelog.pm
+SHA1 7f3edd6e2cd7a54cecea9134d5ba6b819ca79115 lib/Dist/Zilla/Role/YANICK/PreviousVersionProvider.pm
+SHA1 3cbe905b92fbc69d59a06031d5ce6c837b352aa2 t/00-compile.t
+SHA1 9058490d59cebe72d952019148d729eee506246e t/000-report-versions-tiny.t
+SHA1 f28812435973b4e77c6d8aff6a68bef934896c7d t/basic.t
+SHA1 ec3f84bfd7a9ce3246e7592f4134100c6b5ce02b xt/release/unused-vars.t
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.11 (GNU/Linux)
+
+iEYEARECAAYFAlHohjcACgkQ34Hwf+GwC4xe0gCg6v5gqwRuAlqg0KzrYAGXU/l/
+QE0AoKtDG+aA0uG9jHEQsT8f3hkpluna
+=9p8H
+-----END PGP SIGNATURE-----

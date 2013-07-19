@@ -1,4 +1,10 @@
 package Dist::Zilla::Plugin::NextVersion::Semantic;
+BEGIN {
+  $Dist::Zilla::Plugin::NextVersion::Semantic::AUTHORITY = 'cpan:YANICK';
+}
+{
+  $Dist::Zilla::Plugin::NextVersion::Semantic::VERSION = '0.1.3';
+}
 # ABSTRACT: update the next version, semantic-wise
 
 use strict;
@@ -30,32 +36,13 @@ coerce ChangeCategory =>
         [ split /\s*,\s*/, $_ ]
     };
 
-=head1 PARAMETERS
-
-=head2 change_file
-
-File name of the changelog. Defaults to C<Changes>.
-
-=cut
 
 has change_file  => ( is => 'ro', isa=>'Str', default => 'Changes' );
 
-=head2 numify_version
-
-If B<true>, the version will be a number using the I<x.yyyzzz> convention instead
-of I<x.y.z>.  Defaults to B<false>.
-
-=cut
 
 has numify_version => ( is => 'ro', isa => 'Bool', default => 0 );
 
 
-=head2 major
-
-Comma-delimited list of categories of changes considered major.
-Defaults to C<API CHANGES>.
-
-=cut
 
 has major => (
     is => 'ro',
@@ -66,12 +53,6 @@ has major => (
     handles => { major_groups => 'elements' },
 );
 
-=head2 minor
-
-Comma-delimited list of categories of changes considered minor.
-Defaults to C<ENHANCEMENTS>.
-
-=cut
 
 has minor => (
     is => 'ro',
@@ -82,12 +63,6 @@ has minor => (
     handles => { minor_groups => 'elements' },
 );
 
-=head2 revision
-
-Comma-delimited list of categories of changes considered revisions.
-Defaults to C<BUG FIXES, DOCUMENTATION>.
-
-=cut
 
 has revision => (
     is => 'ro',
@@ -260,3 +235,113 @@ __PACKAGE__->meta->make_immutable;
 no Moose;
 1;
 
+__END__
+
+=pod
+
+=head1 NAME
+
+Dist::Zilla::Plugin::NextVersion::Semantic - update the next version, semantic-wise
+
+=head1 VERSION
+
+version 0.1.3
+
+=head1 SYNOPSIS
+
+    # in dist.ini
+
+    [NextVersion::Semantic]
+    major = MAJOR, API CHANGE
+    minor = MINOR, ENHANCEMENTS
+    revision = REVISION, BUG FIXES
+
+    ; must also load a PreviousVersionProvider
+    [PreviousVersion::Changelog]
+
+=head1 DESCRIPTION
+
+Increases the distribution's version according to the semantic versioning rules
+(see L<http://semver.org/>) by inspecting the changelog.
+
+More specifically, the plugin performs the following actions:
+
+=over
+
+=item at build time
+
+Reads the changelog using C<CPAN::Changes> and filters out of the C<{{$NEXT}}>
+release section any group without item.
+
+=item before a release
+
+Ensures that there is at least one recorded change in the changelog, and
+increments the version number in consequence.   If there are changes given
+outside of the sections, they are considered to be minor.
+
+=item after a release
+
+Updates the new C<{{$NEXT}}> section of the changelog with placeholders for
+all the change categories.  With categories as given in the I<SYNOPSIS>,
+this would look like
+
+    {{$NEXT}}
+
+      [MAJOR]
+
+      [API CHANGE]
+
+      [MINOR]
+
+      [ENHANCEMENTS]
+
+      [REVISION]
+
+      [BUG FIXES]
+
+=back
+
+If a version is given via the environment variable C<V>, it will taken
+as-if as the next version.
+
+For this plugin to work, your L<Dist::Zilla> configuration must also contain a plugin
+consuming the L<Dist::Zilla::Role::YANICK::PreviousVersionProvider> role.
+
+=head1 PARAMETERS
+
+=head2 change_file
+
+File name of the changelog. Defaults to C<Changes>.
+
+=head2 numify_version
+
+If B<true>, the version will be a number using the I<x.yyyzzz> convention instead
+of I<x.y.z>.  Defaults to B<false>.
+
+=head2 major
+
+Comma-delimited list of categories of changes considered major.
+Defaults to C<API CHANGES>.
+
+=head2 minor
+
+Comma-delimited list of categories of changes considered minor.
+Defaults to C<ENHANCEMENTS>.
+
+=head2 revision
+
+Comma-delimited list of categories of changes considered revisions.
+Defaults to C<BUG FIXES, DOCUMENTATION>.
+
+=head1 AUTHOR
+
+Yanick Champoux <yanick@cpan.org>
+
+=head1 COPYRIGHT AND LICENSE
+
+This software is copyright (c) 2012 by Yanick Champoux.
+
+This is free software; you can redistribute it and/or modify it under
+the same terms as the Perl 5 programming language system itself.
+
+=cut
