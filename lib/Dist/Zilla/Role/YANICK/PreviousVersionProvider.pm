@@ -1,5 +1,5 @@
 package Dist::Zilla::Role::YANICK::PreviousVersionProvider;
-# provides the previously released version
+#ABSTRACT: provides the distribution's previously released version
 
 =head1 DESCRIPTION
 

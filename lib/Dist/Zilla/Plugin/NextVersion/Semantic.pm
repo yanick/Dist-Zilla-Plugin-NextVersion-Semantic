@@ -1,68 +1,6 @@
 package Dist::Zilla::Plugin::NextVersion::Semantic;
 # ABSTRACT: update the next version, semantic-wise
 
-=head1 SYNOPSIS
-
-    # in dist.ini
-
-    [NextVersion::Semantic]
-    major = MAJOR, API CHANGE
-    minor = MINOR, ENHANCEMENTS
-    revision = REVISION, BUG FIXES
-
-    ; must also load a PreviousVersionProvider
-    [PreviousVersion::Changelog]
-
-=head1 DESCRIPTION
-
-Increases the distribution's version according to the semantic versioning rules
-(see L<http://semver.org/>) by inspecting the changelog.
-
-More specifically, the plugin performs the following actions:
-
-=over
-
-=item at build time
-
-Reads the changelog using C<CPAN::Changes> and filters out of the C<{{$NEXT}}>
-release section any group without item.
-
-=item before a release
-
-Ensures that there is at least one recorded change in the changelog, and
-increments the version number in consequence.   If there are changes given
-outside of the sections, they are considered to be minor.
-
-=item after a release
-
-Updates the new C<{{$NEXT}}> section of the changelog with placeholders for
-all the change categories.  With categories as given in the I<SYNOPSIS>,
-this would look like
-
-    {{$NEXT}}
-
-      [MAJOR]
-
-      [API CHANGE]
-
-      [MINOR]
-
-      [ENHANCEMENTS]
-
-      [REVISION]
-
-      [BUG FIXES]
-
-=back
-
-If a version is given via the environment variable C<V>, it will taken
-as-if as the next version.
-
-For this plugin to work, your L<Dist::Zilla> configuration must also contain a plugin
-consuming the L<Dist::Zilla::Role::YANICK::PreviousVersionProvider> role.
-
-=cut
-
 use strict;
 use warnings;
 
