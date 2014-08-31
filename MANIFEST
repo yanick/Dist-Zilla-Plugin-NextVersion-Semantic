@@ -19,4 +19,5 @@ lib/Dist/Zilla/Role/YANICK/PreviousVersionProvider.pm
 t/00-compile.t
 t/000-report-versions-tiny.t
 t/basic.t
+t/format.t
 xt/release/unused-vars.t

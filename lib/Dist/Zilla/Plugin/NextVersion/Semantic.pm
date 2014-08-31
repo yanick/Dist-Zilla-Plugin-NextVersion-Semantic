@@ -6,7 +6,7 @@ use warnings;
 
 use CPAN::Changes 0.20;
 use Perl::Version;
-use List::MoreUtils qw/ any /;
+use List::AllUtils qw/ any min /;
 
 use Moose;
 
@@ -17,6 +17,7 @@ with qw/
     Dist::Zilla::Role::BeforeRelease
     Dist::Zilla::Role::AfterRelease
     Dist::Zilla::Role::VersionProvider
+    Dist::Zilla::Plugin::NextVersion::Semantic::Incrementer
 /;
 
 use Moose::Util::TypeConstraints;
@@ -49,6 +50,15 @@ of I<x.y.z>.  Defaults to B<false>.
 
 has numify_version => ( is => 'ro', isa => 'Bool', default => 0 );
 
+=head2 format
+
+=cut
+
+has format => (
+    is => 'ro',
+    isa => 'Str',
+    default => '%d.%d.%d',
+);
 
 =head2 major
 
@@ -69,7 +79,7 @@ has major => (
 =head2 minor
 
 Comma-delimited list of categories of changes considered minor.
-Defaults to C<ENHANCEMENTS>.
+Defaults to C<ENHANCEMENTS> and C<UNGROUPED>.
 
 =cut
 
@@ -77,7 +87,7 @@ has minor => (
     is => 'ro',
     isa => 'ChangeCategory',
     coerce => 1,
-    default => sub { [ 'ENHANCEMENTS' ] },
+    default => sub { [ 'ENHANCEMENTS', 'UNGROUPED' ] },
     traits  => ['Array'],
     handles => { minor_groups => 'elements' },
 );
@@ -189,52 +199,40 @@ sub provide_version {
 sub next_version {
     my( $self, $last_version ) = @_;
 
-    my ($changes_file) = grep { $_->name eq $self->change_file } @{ $self->zilla->files };
 
-    my $changes = CPAN::Changes->load_string( $changes_file->content,
-        next_token => qr/{{\$NEXT}}/ );
+    my $new_ver = $self->increment_version( $self->increment_level );
 
-    my ($next) = reverse $changes->releases;
-
-    my $new_ver = $self->inc_version(
-        $last_version,
-        grep { scalar @{ $next->changes($_) } } $next->groups
-    );
-
-    $new_ver = $new_ver->numify if $self->numify_version;
+    $new_ver = Perl::Version->new( $new_ver )->numify if $self->numify_version;
 
     $self->log("Bumping version from $last_version to $new_ver");
     return $new_ver;
 }
 
-sub inc_version {
-    my ( $self, $last_version, @groups ) = @_;
+sub increment_level {
+    my ( $self ) = @_;
 
-    $last_version = Perl::Version->new( $last_version );
+    my ($changes_file) = grep { $_->name eq $self->change_file } @{ $self->zilla->files }
+        or die "no changelog file found\n";
 
-    for my $group ( $self->major_groups ) {
-        next unless any { $group eq $_ } @groups;
+    my $changes = CPAN::Changes->load_string( $changes_file->content,
+        next_token => qr/{{\$NEXT}}/ );
 
-        $self->log_debug( "$group change detected, major increase" );
+    my ($changelog) = reverse $changes->releases;
 
-        $last_version->inc_revision;
-        return $last_version
-    }
+    my %category_map = (
+        map( { $_ => 0 } $self->major_groups ),
+        map( { $_ => 1 } $self->minor_groups ),
+    );
 
-    for my $group ( '', $self->minor_groups ) {
-        next unless any { $group eq $_ } @groups;
+    $category_map{''} = $category_map{UNGROUPED};
 
-        my $section = $group || 'general';
-        $self->log_debug( "$section change detected, minor increase" );
+    no warnings;
 
-        $last_version->inc_version;
-        return $last_version
-    }
+    my $increment_level = min map { $category_map{$_} }
+        grep { scalar @{ $changelog->changes($_) } }  # only groups with items
+        $changelog->groups;
 
-    $self->log_debug( "revision increase" );
-
-    $last_version->inc_subversion;
-    return $last_version;
+    return (qw/MAJOR MINOR PATCH/)[$increment_level//2];
 }
 
 sub munge_files {
@@ -258,5 +256,60 @@ sub munge_files {
 
 __PACKAGE__->meta->make_immutable;
 no Moose;
+
+{
+    package 
+        Dist::Zilla::Plugin::NextVersion::Semantic::Incrementer;
+
+    use List::AllUtils qw/ first_index any /;
+
+    use Moose::Role;
+
+    requires 'previous_version', 'format';
+
+    sub nbr_version_levels {
+        my @tokens = $_[0]->format =~ /(%\d*d)/g;
+        return scalar @tokens;
+    }
+
+    sub increment_version {
+        my( $self, $level ) = @_;
+        $level ||= 'PATCH';
+
+        my @version = (0,0,0);
+
+        my $previous = $self->previous_version;
+
+        # initial version is special
+        unless ( $previous eq '0' ) {
+            my $regex = quotemeta $self->format;
+            $regex =~ s/\\%0(\d+)d/(\\d{$1})/g;
+            $regex =~ s/\\%(\d+)d/(\\d{1,$1})/g;
+            $regex =~ s/\\%d/(\\d+)/g;
+
+            @version = $previous =~ /$regex/
+                or die "previous version '$previous' doesn't match format '$self->format'" ;
+        }
+
+        my @levels = qw/ MAJOR MINOR PATCH /;
+        my $index = first_index { $level eq $_ } @levels;
+
+        $version[$index]++;
+        $version[$_] = 0 for $index+1..2;
+
+        # if the incremental level is below the number of levels we 
+        # have, increment the lowest level we consider
+        if( any { $version[$_] > 0 } $self->nbr_version_levels..2 ) {
+            $version[ $self->nbr_version_levels -1 ]++;
+            $version[$_] = 0 for $self->nbr_version_levels..2;
+        }
+
+        return sprintf $self->format, @version;
+    }
+
+
+}
+
+
 1;
 
