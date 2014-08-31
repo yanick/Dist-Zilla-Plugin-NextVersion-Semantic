@@ -8,6 +8,7 @@ Revision history for {{$dist->name}}
  [DOCUMENTATION]
 
  [ENHANCEMENTS]
+ - Version format is now configurable.
 
  [NEW FEATURES]
 
