@@ -58,4 +58,15 @@ as-if as the next version.
 For this plugin to work, your L<Dist::Zilla> configuration must also contain a plugin
 consuming the L<Dist::Zilla::Role::YANICK::PreviousVersionProvider> role.
 
+In the different configuration attributes where change group names are given,
+the special group name C<UNGROUPED> can be given to 
+specify the nameless group.
+
+    0.1.3 2013-07-18
+
+    - this item will be part of UNGROUPED.
+
+    [BUG FIXES]
+    - this one won't.
+
 =cut

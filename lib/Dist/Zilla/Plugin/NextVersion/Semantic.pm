@@ -52,12 +52,36 @@ has numify_version => ( is => 'ro', isa => 'Bool', default => 0 );
 
 =head2 format
 
+Specifies the version format to use. Follows the '%d' convention of
+C<sprintf> (see examples below), excepts for one detail: '%3d' won't pad 
+with whitespaces, but will only determine the maximal size of the number. 
+If a version component exceeds its given
+size, the next version level will be incremented.
+
+Examples:
+
+    %d.%3d.%3d 
+        PATCH LEVEL INCREASES: 0.0.998 -> 0.0.999 -> 0.1.0
+        MINOR LEVEL INCREASES: 0.0.8 -> 0.1.0 -> 0.2.0
+        MAJOR LEVEL INCREASES: 0.1.8 -> 1.0.0 -> 2.0.0
+
+    %d.%02d%02d
+        PATCH LEVEL INCREASES: 0.0098 -> 0.00099 -> 0.0100
+        MINOR LEVEL INCREASES: 0.0008 -> 0.0100 -> 0.0200
+        MAJOR LEVEL INCREASES: 0.0108 -> 1.0000 -> 2.0000
+
+    %d.%05d
+        MINOR LEVEL INCREASES: 0.99998 -> 0.99999 -> 1.00000
+        MAJOR LEVEL INCREASES: 0.00108 -> 1.00000 -> 2.00000
+
+Defaults to '%d.%3d.%3d'.
+
 =cut
 
 has format => (
     is => 'ro',
     isa => 'Str',
-    default => '%d.%d.%d',
+    default => '%d.%3d.%3d',
 );
 
 =head2 major
@@ -80,7 +104,6 @@ has major => (
 
 Comma-delimited list of categories of changes considered minor.
 Defaults to C<ENHANCEMENTS> and C<UNGROUPED>.
-
 =cut
 
 has minor => (
@@ -141,7 +164,7 @@ sub after_release {
 
   my ( $next ) = reverse $changes->releases;
 
-  $next->add_group( $self->all_groups );
+  $next->add_group( grep { $_ ne 'UNGROUPED' } $self->all_groups );
 
   $self->log_debug([ 'updating contents of %s on disk', $filename ]);
 
@@ -258,8 +281,7 @@ __PACKAGE__->meta->make_immutable;
 no Moose;
 
 {
-    package 
-        Dist::Zilla::Plugin::NextVersion::Semantic::Incrementer;
+    package Dist::Zilla::Plugin::NextVersion::Semantic::Incrementer;
 
     use List::AllUtils qw/ first_index any /;
 
@@ -270,6 +292,10 @@ no Moose;
     sub nbr_version_levels {
         my @tokens = $_[0]->format =~ /(%\d*d)/g;
         return scalar @tokens;
+    }
+
+    sub version_lenghts {
+        return $_[0]->format =~ /%0*(\d*)/g;
     }
 
     sub increment_version {
@@ -304,7 +330,19 @@ no Moose;
             $version[$_] = 0 for $self->nbr_version_levels..2;
         }
 
-        return sprintf $self->format, @version;
+        # exceeding sizes?
+        my @sizes = $self->version_lenghts;
+        for my $i ( grep { $sizes[$_] } reverse 0..2 ) {
+            if ( length( $version[$i] ) > $sizes[$i] ) {
+                $version[$i-1]++;
+                $version[$i] = 0;
+            }
+        }
+
+        my $version = sprintf $self->format, @version;
+        $version =~ y/ //d;
+
+        return $version;
     }
 
 

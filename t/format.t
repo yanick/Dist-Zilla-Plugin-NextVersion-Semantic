@@ -31,7 +31,7 @@ sub incr {
     return $version;
 }
 
-my $format = '%d.%d.%d';
+my $format = '%d.%3d.%3d';
 subtest $format => sub { 
     my $incrementer = MyTest->new(
         previous_version => 0,
@@ -44,6 +44,9 @@ subtest $format => sub {
     is incr( $incrementer, 'PATCH') => '2.1.1';
     is incr( $incrementer ) => '2.1.2';
     is incr( $incrementer, 'MINOR' ) => '2.2.0';
+
+    $incrementer->previous_version( "0.0.999" );
+    is incr( $incrementer ) => '0.1.0', 'length exceeded';
 };
 
 $format = '%d.%d';
