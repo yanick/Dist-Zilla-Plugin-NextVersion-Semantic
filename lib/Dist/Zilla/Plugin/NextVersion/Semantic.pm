@@ -314,7 +314,7 @@ no Moose;
             $regex =~ s/\\%d/(\\d+)/g;
 
             @version = $previous =~ /$regex/
-                or die "previous version '$previous' doesn't match format '$self->format'" ;
+                or die "previous version '$previous' doesn't match format '@{[$self->format]}'" ;
         }
 
         my @levels = qw/ MAJOR MINOR PATCH /;
