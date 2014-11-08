@@ -1,17 +1,11 @@
-Revision history for {{$dist->name}}
+Revision history for Dist-Zilla-Plugin-NextVersion-Semantic
 
-{{$NEXT}}
- [API CHANGES]
-
+0.2.1 2014-11-08
  [BUG FIXES]
-
- [DOCUMENTATION]
-
- [ENHANCEMENTS]
-
- [NEW FEATURES]
+ - Fix error message.
 
  [STATISTICS]
+ - code churn: 3 files changed, 12 insertions(+), 3 deletions(-)
 
 0.2.0 2014-08-31
  [ENHANCEMENTS]
