@@ -12,7 +12,9 @@ README
 README.mkdn
 SIGNATURE
 corpus/lib/DZT/Sample.pm
+cpanfile
 dist.ini
+doap.xml
 lib/Dist/Zilla/Plugin/NextVersion/Semantic.pm
 lib/Dist/Zilla/Plugin/PreviousVersion/Changelog.pm
 lib/Dist/Zilla/Role/YANICK/PreviousVersionProvider.pm
