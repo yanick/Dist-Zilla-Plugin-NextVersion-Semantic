@@ -1,6 +1,9 @@
 package Dist::Zilla::Plugin::NextVersion::Semantic;
+BEGIN {
+  $Dist::Zilla::Plugin::NextVersion::Semantic::AUTHORITY = 'cpan:YANICK';
+}
 # ABSTRACT: update the next version, semantic-wise
-
+$Dist::Zilla::Plugin::NextVersion::Semantic::VERSION = '0.2.2';
 use strict;
 use warnings;
 
@@ -31,52 +34,12 @@ coerce ChangeCategory =>
         [ split /\s*,\s*/, $_ ]
     };
 
-=head1 PARAMETERS
-
-=head2 change_file
-
-File name of the changelog. Defaults to C<Changes>.
-
-=cut
 
 has change_file  => ( is => 'ro', isa=>'Str', default => 'Changes' );
 
-=head2 numify_version
-
-If B<true>, the version will be a number using the I<x.yyyzzz> convention instead
-of I<x.y.z>.  Defaults to B<false>.
-
-=cut
 
 has numify_version => ( is => 'ro', isa => 'Bool', default => 0 );
 
-=head2 format
-
-Specifies the version format to use. Follows the '%d' convention of
-C<sprintf> (see examples below), excepts for one detail: '%3d' won't pad 
-with whitespaces, but will only determine the maximal size of the number. 
-If a version component exceeds its given
-size, the next version level will be incremented.
-
-Examples:
-
-    %d.%3d.%3d 
-        PATCH LEVEL INCREASES: 0.0.998 -> 0.0.999 -> 0.1.0
-        MINOR LEVEL INCREASES: 0.0.8 -> 0.1.0 -> 0.2.0
-        MAJOR LEVEL INCREASES: 0.1.8 -> 1.0.0 -> 2.0.0
-
-    %d.%02d%02d
-        PATCH LEVEL INCREASES: 0.0098 -> 0.00099 -> 0.0100
-        MINOR LEVEL INCREASES: 0.0008 -> 0.0100 -> 0.0200
-        MAJOR LEVEL INCREASES: 0.0108 -> 1.0000 -> 2.0000
-
-    %d.%05d
-        MINOR LEVEL INCREASES: 0.99998 -> 0.99999 -> 1.00000
-        MAJOR LEVEL INCREASES: 0.00108 -> 1.00000 -> 2.00000
-
-Defaults to '%d.%3d.%3d'.
-
-=cut
 
 has format => (
     is => 'ro',
@@ -84,12 +47,6 @@ has format => (
     default => '%d.%3d.%3d',
 );
 
-=head2 major
-
-Comma-delimited list of categories of changes considered major.
-Defaults to C<API CHANGES>.
-
-=cut
 
 has major => (
     is => 'ro',
@@ -100,11 +57,6 @@ has major => (
     handles => { major_groups => 'elements' },
 );
 
-=head2 minor
-
-Comma-delimited list of categories of changes considered minor.
-Defaults to C<ENHANCEMENTS> and C<UNGROUPED>.
-=cut
 
 has minor => (
     is => 'ro',
@@ -115,12 +67,6 @@ has minor => (
     handles => { minor_groups => 'elements' },
 );
 
-=head2 revision
-
-Comma-delimited list of categories of changes considered revisions.
-Defaults to C<BUG FIXES, DOCUMENTATION>.
-
-=cut
 
 has revision => (
     is => 'ro',
@@ -282,8 +228,11 @@ no Moose;
 
 {
     package Dist::Zilla::Plugin::NextVersion::Semantic::Incrementer;
-
-    use List::AllUtils qw/ first_index any /;
+BEGIN {
+  $Dist::Zilla::Plugin::NextVersion::Semantic::Incrementer::AUTHORITY = 'cpan:YANICK';
+}
+$Dist::Zilla::Plugin::NextVersion::Semantic::Incrementer::VERSION = '0.2.2';
+use List::AllUtils qw/ first_index any /;
 
     use Moose::Role;
 
@@ -349,3 +298,152 @@ no Moose;
 
 1;
 
+__END__
+
+=pod
+
+=encoding UTF-8
+
+=head1 NAME
+
+Dist::Zilla::Plugin::NextVersion::Semantic - update the next version, semantic-wise
+
+=head1 VERSION
+
+version 0.2.2
+
+=head1 SYNOPSIS
+
+    # in dist.ini
+
+    [NextVersion::Semantic]
+    major = MAJOR, API CHANGE
+    minor = MINOR, ENHANCEMENTS
+    revision = REVISION, BUG FIXES
+
+    ; must also load a PreviousVersionProvider
+    [PreviousVersion::Changelog]
+
+=head1 DESCRIPTION
+
+Increases the distribution's version according to the semantic versioning rules
+(see L<http://semver.org/>) by inspecting the changelog.
+
+More specifically, the plugin performs the following actions:
+
+=over
+
+=item at build time
+
+Reads the changelog using C<CPAN::Changes> and filters out of the C<{{$NEXT}}>
+release section any group without item.
+
+=item before a release
+
+Ensures that there is at least one recorded change in the changelog, and
+increments the version number in consequence.   If there are changes given
+outside of the sections, they are considered to be minor.
+
+=item after a release
+
+Updates the new C<{{$NEXT}}> section of the changelog with placeholders for
+all the change categories.  With categories as given in the I<SYNOPSIS>,
+this would look like
+
+    {{$NEXT}}
+
+      [MAJOR]
+
+      [API CHANGE]
+
+      [MINOR]
+
+      [ENHANCEMENTS]
+
+      [REVISION]
+
+      [BUG FIXES]
+
+=back
+
+If a version is given via the environment variable C<V>, it will taken
+as-if as the next version.
+
+For this plugin to work, your L<Dist::Zilla> configuration must also contain a plugin
+consuming the L<Dist::Zilla::Role::YANICK::PreviousVersionProvider> role.
+
+In the different configuration attributes where change group names are given,
+the special group name C<UNGROUPED> can be given to 
+specify the nameless group.
+
+    0.1.3 2013-07-18
+
+    - this item will be part of UNGROUPED.
+
+    [BUG FIXES]
+    - this one won't.
+
+=head1 PARAMETERS
+
+=head2 change_file
+
+File name of the changelog. Defaults to C<Changes>.
+
+=head2 numify_version
+
+If B<true>, the version will be a number using the I<x.yyyzzz> convention instead
+of I<x.y.z>.  Defaults to B<false>.
+
+=head2 format
+
+Specifies the version format to use. Follows the '%d' convention of
+C<sprintf> (see examples below), excepts for one detail: '%3d' won't pad 
+with whitespaces, but will only determine the maximal size of the number. 
+If a version component exceeds its given
+size, the next version level will be incremented.
+
+Examples:
+
+    %d.%3d.%3d 
+        PATCH LEVEL INCREASES: 0.0.998 -> 0.0.999 -> 0.1.0
+        MINOR LEVEL INCREASES: 0.0.8 -> 0.1.0 -> 0.2.0
+        MAJOR LEVEL INCREASES: 0.1.8 -> 1.0.0 -> 2.0.0
+
+    %d.%02d%02d
+        PATCH LEVEL INCREASES: 0.0098 -> 0.00099 -> 0.0100
+        MINOR LEVEL INCREASES: 0.0008 -> 0.0100 -> 0.0200
+        MAJOR LEVEL INCREASES: 0.0108 -> 1.0000 -> 2.0000
+
+    %d.%05d
+        MINOR LEVEL INCREASES: 0.99998 -> 0.99999 -> 1.00000
+        MAJOR LEVEL INCREASES: 0.00108 -> 1.00000 -> 2.00000
+
+Defaults to '%d.%3d.%3d'.
+
+=head2 major
+
+Comma-delimited list of categories of changes considered major.
+Defaults to C<API CHANGES>.
+
+=head2 minor
+
+Comma-delimited list of categories of changes considered minor.
+Defaults to C<ENHANCEMENTS> and C<UNGROUPED>.
+
+=head2 revision
+
+Comma-delimited list of categories of changes considered revisions.
+Defaults to C<BUG FIXES, DOCUMENTATION>.
+
+=head1 AUTHOR
+
+Yanick Champoux <yanick@cpan.org>
+
+=head1 COPYRIGHT AND LICENSE
+
+This software is copyright (c) 2012 by Yanick Champoux.
+
+This is free software; you can redistribute it and/or modify it under
+the same terms as the Perl 5 programming language system itself.
+
+=cut
