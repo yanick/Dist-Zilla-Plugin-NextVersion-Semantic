@@ -226,6 +226,7 @@ sub next_version {
 
     $new_ver = Perl::Version->new( $new_ver )->numify if $self->numify_version;
 
+    no warnings;
     $self->log("Bumping version from $last_version to $new_ver");
     return $new_ver;
 }
