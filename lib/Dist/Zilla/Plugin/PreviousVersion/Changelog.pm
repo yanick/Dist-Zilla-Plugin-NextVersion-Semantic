@@ -40,15 +40,15 @@ has changelog => (
     lazy => 1,
     default => sub {
         my $self = shift;
-        my $changes_file = first { $_->name eq $self->filename } 
+        my $changes_file = first { $_->name eq $self->filename }
                                  @{ $self->zilla->files }
-            or $self->log_fatal( 
-                    "changelog '@{[ $self->filename ]}' not found" ); 
+            or $self->log_fatal(
+                    "changelog '@{[ $self->filename ]}' not found" );
 
-        CPAN::Changes->load_string( 
-            $changes_file->content, 
-            next_token => qr/{{\$NEXT}}/ 
-        ); 
+        CPAN::Changes->load_string(
+            $changes_file->content,
+            next_token => qr/{{\$NEXT}}/
+        );
     },
 );
 
@@ -56,12 +56,9 @@ sub provide_previous_version {
     my $self = shift;
 
     # TODO {{$NEXT}} not generic enough
-    my $version = 
-           first { $_ ne '{{$NEXT}}' } 
+    return first { $_ ne '{{$NEXT}}' } 
            map   { $_->version }
            reverse $self->changelog->releases;
-
-    return $version || '0.0.0';
 }
 
 __PACKAGE__->meta->make_immutable;

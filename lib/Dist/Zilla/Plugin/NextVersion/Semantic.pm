@@ -203,8 +203,7 @@ has previous_version => (
             return $version if defined $version;
         }
 
-        $self->log_fatal('no previous version found');
-
+        return undef;
     },
 );
 
@@ -227,6 +226,7 @@ sub next_version {
 
     $new_ver = Perl::Version->new( $new_ver )->numify if $self->numify_version;
 
+    no warnings;
     $self->log("Bumping version from $last_version to $new_ver");
     return $new_ver;
 }
@@ -304,16 +304,14 @@ no Moose;
 
         my @version = (0,0,0);
 
-        my $previous = $self->previous_version;
-
         # initial version is special
-        unless ( $previous eq '0' ) {
+        if ( my $previous = $self->previous_version ) {
             my $regex = quotemeta $self->format;
             $regex =~ s/\\%0(\d+)d/(\\d{$1})/g;
             $regex =~ s/\\%(\d+)d/(\\d{1,$1})/g;
             $regex =~ s/\\%d/(\\d+)/g;
 
-            @version = $previous =~ /$regex/
+            @version = $previous =~ m/$regex/
                 or die "previous version '$previous' doesn't match format '@{[$self->format]}'" ;
         }
 

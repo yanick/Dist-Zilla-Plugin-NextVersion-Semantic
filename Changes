@@ -4,6 +4,8 @@ Revision history for {{$dist->name}}
  [API CHANGES]
 
  [BUG FIXES]
+ - Custom version formats didn't work on 
+    first version. (GH#3, Csson)
 
  [DOCUMENTATION]
 
