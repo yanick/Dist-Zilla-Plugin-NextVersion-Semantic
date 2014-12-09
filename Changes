@@ -4,8 +4,6 @@ Revision history for {{$dist->name}}
  [API CHANGES]
 
  [BUG FIXES]
- - Custom version formats didn't work on 
-    first version. (GH#3, Csson)
 
  [DOCUMENTATION]
 
@@ -14,6 +12,13 @@ Revision history for {{$dist->name}}
  [NEW FEATURES]
 
  [STATISTICS]
+
+0.2.2 2014-12-08
+ [BUG FIXES]
+ - Custom version formats didn't work on  first version. (GH#3, Csson)
+
+ [STATISTICS]
+ - code churn: 3 files changed, 21 insertions(+), 17 deletions(-)
 
 0.2.1 2014-11-08
  [BUG FIXES]
