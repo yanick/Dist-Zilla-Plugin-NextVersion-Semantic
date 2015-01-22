@@ -4,6 +4,8 @@ Revision history for {{$dist->name}}
  [API CHANGES]
 
  [BUG FIXES]
+ - Only support Perl 5.10.0 and up.
+ - distro was claiming DZT::Sample.
 
  [DOCUMENTATION]
 
