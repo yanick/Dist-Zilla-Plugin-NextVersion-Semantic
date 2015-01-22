@@ -4,6 +4,8 @@ package Dist::Zilla::Plugin::NextVersion::Semantic;
 use strict;
 use warnings;
 
+use 5.10.0;
+
 use CPAN::Changes 0.20;
 use Perl::Version;
 use List::AllUtils qw/ any min /;
