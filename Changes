@@ -1,18 +1,11 @@
-Revision history for {{$dist->name}}
+Revision history for Dist-Zilla-Plugin-NextVersion-Semantic
 
-{{$NEXT}}
- [API CHANGES]
-
+0.2.4 2015-05-24
  [BUG FIXES]
  - Mix of patch and minor was giving wrong increment. (GH#4)
 
- [DOCUMENTATION]
-
- [ENHANCEMENTS]
-
- [NEW FEATURES]
-
  [STATISTICS]
+ - code churn: 4 files changed, 30 insertions(+), 5 deletions(-)
 
 0.2.3 2015-01-22
  [BUG FIXES]
