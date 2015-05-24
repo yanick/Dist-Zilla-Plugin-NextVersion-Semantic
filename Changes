@@ -4,6 +4,7 @@ Revision history for {{$dist->name}}
  [API CHANGES]
 
  [BUG FIXES]
+ - Mix of patch and minor was giving wrong increment. (GH#4)
 
  [DOCUMENTATION]
 

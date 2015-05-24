@@ -253,7 +253,9 @@ sub increment_level {
 
     no warnings;
 
-    my $increment_level = min map { $category_map{$_} }
+    my $increment_level = min 
+        grep { defined } 
+        map  { $category_map{$_} }
         grep { scalar @{ $changelog->changes($_) } }  # only groups with items
         $changelog->groups;
 

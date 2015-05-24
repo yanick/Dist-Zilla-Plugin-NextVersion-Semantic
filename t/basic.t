@@ -1,7 +1,7 @@
 use strict;
 use warnings;
 
-use Test::More tests => 7;
+use Test::More tests => 8;
 use Test::Exception;
 
 use Test::DZil;
@@ -30,6 +30,22 @@ $tzil->build;
 like $tzil->slurp_file('build/Changes'),
     qr/1\.0\.0/,
     "major change";
+
+subtest "minor + patch" => sub {
+    my $tzil = make_tzil( $dist_ini, make_changes(<<'END') );
+    [ENHANCEMENTS]
+    - Game changer
+
+    [DOCUMENTATION]
+    - Not as important
+END
+
+    $tzil->build;
+
+    like $tzil->slurp_file('build/Changes'),
+        qr/0\.1\.0/,
+        "minor change wins";
+};
 
 $tzil = make_tzil( $dist_ini, make_changes(<<'END') );
     [DOCUMENTATION]
