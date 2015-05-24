@@ -4,7 +4,6 @@ Revision history for {{$dist->name}}
  [API CHANGES]
 
  [BUG FIXES]
- - Mix of patch and minor was giving wrong increment. (GH#4)
 
  [DOCUMENTATION]
 
@@ -13,6 +12,13 @@ Revision history for {{$dist->name}}
  [NEW FEATURES]
 
  [STATISTICS]
+
+0.2.4 2015-05-24
+ [BUG FIXES]
+ - Mix of patch and minor was giving wrong increment. (GH#4)
+
+ [STATISTICS]
+ - code churn: 4 files changed, 30 insertions(+), 5 deletions(-)
 
 0.2.3 2015-01-22
  [BUG FIXES]
