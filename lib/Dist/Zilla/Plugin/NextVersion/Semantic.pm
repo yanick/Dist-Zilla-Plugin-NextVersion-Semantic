@@ -341,6 +341,8 @@ no Moose;
             }
         }
 
+        no warnings; # possible redundant args for sprintf
+
         my $version = sprintf $self->format, @version;
         $version =~ y/ //d;
 
