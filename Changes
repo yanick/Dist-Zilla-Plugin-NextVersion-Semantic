@@ -14,6 +14,9 @@ Revision history for {{$dist->name}}
   [ STATISTICS ]
 
 0.2.5 2015-06-15
+  [ BUG FIXES ]
+   - Silence Perl 5.22 warnings. (GH#5)
+
   [ STATISTICS ]
     - code churn: 5 files changed, 22 insertions(+), 9 deletions(-)
 
