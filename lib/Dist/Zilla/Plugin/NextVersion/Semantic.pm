@@ -140,7 +140,7 @@ sub before_release {
 
   my $changes = CPAN::Changes->load_string(
       $changes_file->content,
-      next_token => qr/{{\$NEXT}}/
+      next_token => qr/\{\{\$NEXT\}\}/
   );
 
   my( $next ) = reverse $changes->releases;
@@ -158,7 +158,7 @@ sub after_release {
 
   my $changes = CPAN::Changes->load(
       $self->change_file,
-      next_token => qr/{{\$NEXT}}/
+      next_token => qr/\{\{\$NEXT\}\}/
   );
 
   # remove empty groups
@@ -240,7 +240,7 @@ sub increment_level {
         or die "no changelog file found\n";
 
     my $changes = CPAN::Changes->load_string( $changes_file->content,
-        next_token => qr/{{\$NEXT}}/ );
+        next_token => qr/\{\{\$NEXT\}\}/ );
 
     my ($changelog) = reverse $changes->releases;
 
@@ -269,7 +269,7 @@ sub munge_files {
   return unless $file;
 
   my $changes = CPAN::Changes->load_string( $file->content,
-      next_token => qr/{{\$NEXT}}/
+      next_token => qr/\{\{\$NEXT\}\}/
   );
 
   my ( $next ) = reverse $changes->releases;

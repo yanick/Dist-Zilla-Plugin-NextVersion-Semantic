@@ -47,7 +47,7 @@ has changelog => (
 
         CPAN::Changes->load_string(
             $changes_file->content,
-            next_token => qr/{{\$NEXT}}/
+            next_token => qr/\{\{\$NEXT\}\}/
         );
     },
 );
