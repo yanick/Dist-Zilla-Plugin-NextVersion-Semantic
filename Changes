@@ -4,7 +4,10 @@ Revision history for {{$dist->name}}
   [ API CHANGES ]
 
   [ BUG FIXES ]
-  - Don't let tests fail when V=1 is in MAKEOPTS for Gnu AutoTools "Verbose" mode
+  - Don't let tests fail when V=1 is in MAKEOPTS for Gnu AutoTools "Verbose"
+    mode.
+    [#6](https://github.com/yanick/Dist-Zilla-Plugin-NextVersion-Semantic/pull/6),
+    thanks to kentfredric.
 
   [ DOCUMENTATION ]
 
